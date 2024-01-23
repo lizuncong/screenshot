@@ -27,23 +27,8 @@ const resolvablePromise = () => {
 const fakeAuth = async (page) => {
   // DEMO：先写死cookie以实现接口鉴权
   await page.setCookie({
-    name: "x-admin-token",
-    value: "0e0fb17ccf2fc41b0a03d33200ff1654f",
-    domain: "localhost",
-  });
-  await page.setCookie({
-    name: "x-auth-brand",
-    value: "bytello",
-    domain: "localhost",
-  });
-  await page.setCookie({
-    name: "x-auth-app",
-    value: "ifp-edit-enow",
-    domain: "localhost",
-  });
-  await page.setCookie({
     name: "x-token",
-    value: "0ac1b8557486547b68277822732c2d418",
+    value: "0362c9f999ed8468cbe30e177a6db2051",
     domain: ".test.bytello.com",
   });
   await page.setCookie({

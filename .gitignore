@@ -8,6 +8,8 @@
 .idea/
 # testing
 /coverage
+/imgs
+/output.pdf
 
 # misc
 .DS_Store

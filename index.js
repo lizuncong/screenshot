@@ -1,11 +1,11 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
-const fs = require('fs');
+const fs = require("fs");
 const { resolvablePromise, mkdir2, renderHtml, fakeAuth } = require("./util");
 const app = express();
 const publicPath = "imgs";
 app.use(express.static(publicPath));
-
+console.log("proces..pid..", process.pid);
 //设置跨域访问
 app.all("*", function (req, res, next) {
   res.header(
@@ -20,6 +20,7 @@ app.all("*", function (req, res, next) {
   next();
 });
 
+let browser;
 app.get("/export", async (req, res) => {
   let courseInfo = decodeURIComponent(req.query.courseInfo);
   try {
@@ -31,8 +32,9 @@ app.get("/export", async (req, res) => {
     JSON.stringify(courseInfo)
   )}`;
   console.log(process.memoryUsage());
-
-  const browser = await puppeteer.launch({ headless: false });
+  if (!browser) {
+    browser = await puppeteer.launch({ headless: true });
+  }
   let page = await browser.newPage();
   await page.setViewport({
     width: courseInfo.extraData.width,
@@ -75,10 +77,13 @@ app.get("/export", async (req, res) => {
   await page.setContent(html, { waitUntil: "networkidle0" });
 
   await page.pdf({ path: "output.pdf", format: "A4" });
+
   // 删除目录
   fs.rmdirSync(dir, { recursive: true });
   console.log(process.memoryUsage());
   res.send("Hello World");
+  console.log("process..", process.pid);
+  await page.close();
 });
 
 app.listen(7007);
